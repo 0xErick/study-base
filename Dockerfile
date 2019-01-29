@@ -47,3 +47,6 @@ RUN docker-php-source extract \
     && mv mongodb-$MONGODB_VERSION /usr/src/php/ext/mongodb \
     && docker-php-ext-install mongodb \
     && docker-php-source delete
+
+## install bcmath ext
+RUN docker-php-ext-install bcmath
