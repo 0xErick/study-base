@@ -2,9 +2,9 @@ FROM saqing/node-php-nginx:0.1
 
 ## install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-      && php composer-setup.php \
-      && php -r "unlink('composer-setup.php');" \
-      && mv composer.phar /usr/local/bin/composer
+    && php composer-setup.php \
+    && php -r "unlink('composer-setup.php');" \
+    && mv composer.phar /usr/local/bin/composer
 
 ## install pdo_mysql ext
 RUN docker-php-ext-install pdo_mysql
@@ -20,11 +20,11 @@ RUN apk add --no-cache zlib-dev && docker-php-ext-install zip && apk del zlib-de
 
 ## install ldap ext
 RUN apk add --no-cache --virtual .persistent-deps \
-        ca-certificates \
-        openldap-dev \
-        curl \
-        tar \
-        xz \
+    ca-certificates \
+    openldap-dev \
+    curl \
+    tar \
+    xz \
     && docker-php-ext-configure ldap --with-libdir=lib/ \
     && docker-php-ext-install ldap
 
@@ -48,5 +48,13 @@ RUN docker-php-source extract \
     && docker-php-ext-install mongodb \
     && docker-php-source delete
 
+## install tideways ext
+RUN docker-php-source extract \
+    && curl -L -o /tmp/tideways.tar.gz https://github.com/tideways/php-xhprof-extension/archive/v4.1.7.tar.gz \
+    && tar xfz /tmp/tideways.tar.gz \
+    && rm -r /tmp/tideways.tar.gz \
+    && mv php-xhprof-extension-4.1.7 /usr/src/php/ext/tideways \
+    && docker-php-ext-install tideways \
+    && docker-php-source delete
 ## install bcmath ext
 RUN docker-php-ext-install bcmath
