@@ -58,3 +58,12 @@ RUN docker-php-source extract \
     && docker-php-source delete
 ## install bcmath ext
 RUN docker-php-ext-install bcmath
+
+## install swoole ext
+RUN docker-php-source extract \ 
+&& curl -L -o /tmp/swoole.tar.gz https://github.com/swoole/swoole-src/archive/v4.2.13.tar.gz \ 
+&& tar xfz /tmp/swoole.tar.gz \ 
+&& rm -r /tmp/swoole.tar.gz \ 
+&& mv swoole-src-4.2.13 /usr/src/php/ext/swoole \ 
+&& docker-php-ext-install swoole \ 
+&& docker-php-source delete
